@@ -14,9 +14,9 @@ namespace CourseScheduler
     public partial class CreateTerm : Form
     {
         private MySqlConnection conn;
-        public CreateTerm(MainWindow parent)
+        public CreateTerm()
         {
-            conn = new MySqlConnection(parent.connString);
+            conn = new MySqlConnection(Scheduling.Settings.connString);
             conn.Open();
             InitializeComponent();
             populateProfList();
@@ -111,10 +111,6 @@ namespace CourseScheduler
                 Console.WriteLine(lst_TermProf.Items[i].SubItems[0].Text);
                 profCmd.ExecuteNonQuery();
             }
-            ErrorForm form = new ErrorForm("Term created successfully.");
-            form.MdiParent = this.MdiParent;
-            form.Text = "Semester Created Successfully";
-            form.Show();
             this.Close();
             
         }

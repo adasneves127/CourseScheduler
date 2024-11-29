@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Xml.Linq;
+using System.Data;
 using MySqlConnector;
 
 namespace CourseScheduler
@@ -32,12 +33,20 @@ namespace CourseScheduler
                     {
                         if (key != null)
                         {
-                            host = (string)key.GetValue("db_host");
-                            name = (string)key.GetValue("db_name");
+                            Scheduling.Settings.host = (string)key.GetValue("db_host");
+                            Scheduling.Settings.name = (string)key.GetValue("db_name");
                         }
                     }
-                    MySqlConnection conn = new MySqlConnection("server=" + host + ";uid=" + loginForm.txtUserID.Text + ";pwd=" + loginForm.txtPassword.Text + ";database=" + name + ";");
+                    Scheduling.Settings.user = loginForm.txtUserID.Text;
+                    Scheduling.Settings.password = loginForm.txtPassword.Text;
+                    MySqlConnection conn = new MySqlConnection(Scheduling.Settings.connString);
                     conn.Open();
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "SELECT SUBSTRING_INDEX(current_user, '@', 1)";
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    reader.Read();
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +62,7 @@ namespace CourseScheduler
                     return;
                 }
 
-                MainWindow win = new MainWindow(loginForm.txtUserID.Text, loginForm.txtPassword.Text);
+                MainWindow win = new MainWindow();
                 // login was successful
                 Application.Run(win);
             }

@@ -81,11 +81,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="CourseList.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CourseList.Designer.cs">
       <DependentUpon>CourseList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateProfessor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateProfessor.Designer.cs">
+      <DependentUpon>CreateProfessor.cs</DependentUpon>
     </Compile>
     <Compile Include="CreateTerm.cs">
       <SubType>Form</SubType>
@@ -117,6 +129,12 @@
     <Compile Include="NewCourse.Designer.cs">
       <DependentUpon>NewCourse.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProfessorList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProfessorList.Designer.cs">
+      <DependentUpon>ProfessorList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Semesters.cs">
@@ -126,8 +144,14 @@
       <DependentUpon>Semesters.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CourseList.resx">
       <DependentUpon>CourseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateProfessor.resx">
+      <DependentUpon>CreateProfessor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreateTerm.resx">
       <DependentUpon>CreateTerm.cs</DependentUpon>
@@ -143,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NewCourse.resx">
       <DependentUpon>NewCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProfessorList.resx">
+      <DependentUpon>ProfessorList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

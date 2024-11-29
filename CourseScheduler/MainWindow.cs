@@ -16,38 +16,18 @@ namespace CourseScheduler
     {
         NewCourse newCourse;
         public MySqlConnection conn;
-        public string user = "";
-        string host = "";
-        string name = "";
-        public string password = "";
-        public string connString { get =>"server=" + host + ";uid=" + user + ";pwd=" + password + ";database=" + name + ";";}
+        
         private ToolStripMenuItem checkedItem = null;
         //public static string connStr = "server=db.adasneves.info;uid=;pwd=;database=schedule";
-        public MainWindow(string user, string password)
+        public MainWindow()
         {
-            this.user = user;
-            this.password = password;
             try
             {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Scheduler"))
-                {
-                    if(key != null)
-                    {
-                        host = (string)key.GetValue("db_host");
-                        name = (string)key.GetValue("db_name");
-                    }
-                }
-            } catch (Exception ex)
-            {
-                throw ex;
-            }
-            try
-            {
-                conn = new MySqlConnection(connString);
+                conn = new MySqlConnection(Scheduling.Settings.connString);
                 conn.Open();
             } catch (Exception ex)
             {
-                
+                Application.Exit();
             }
             InitializeComponent();
             populateStrip();
@@ -60,7 +40,7 @@ namespace CourseScheduler
             cmd.CommandText = "SELECT CONCAT(title, ' ', first_name, ' ', last_name) FROM users WHERE username = @name";
             cmd.Connection = conn;
             cmd.CommandType = CommandType.Text;
-            cmd.Parameters.AddWithValue("@name", this.user);
+            cmd.Parameters.AddWithValue("@name", Scheduling.Settings.user);
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
             stripLbl1.Text = reader[0].ToString();
@@ -68,20 +48,6 @@ namespace CourseScheduler
         }
 
         private void populateMenu() {
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandText = "SELECT semesterName FROM semester";
-            cmd.Connection = conn;
-            cmd.CommandType = CommandType.Text;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine(reader[0]);
-                ToolStripMenuItem item = new ToolStripMenuItem();
-                item.Click += selectTerm;
-                item.Text = reader[0].ToString();
-                manageTermsToolStripMenuItem.DropDownItems.Add(item);
-            }
-            reader.Close();
         }
 
         private void viewClassesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -89,17 +55,6 @@ namespace CourseScheduler
 
         }
 
-        private void selectTerm(object sender, EventArgs e)
-        {
-            if(checkedItem != null)
-            {
-                checkedItem.Checked = false;
-            }
-            ToolStripMenuItem itm = (ToolStripMenuItem)sender;
-            if (checkedItem == itm) return;
-            itm.Checked = true;
-            checkedItem = itm;
-        }
 
         private void createTermToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -113,6 +68,38 @@ namespace CourseScheduler
             sem.Show();
         }
 
-        
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            if (Scheduling.Settings.semesterName == null)
+            {
+                this.currentTermName.Text = "No term Selected!";
+                this.currentTermName.BackColor = Color.Red;
+                this.currentTermName.ForeColor = Color.White;
+            } else
+            {
+                this.currentTermName.Text = Scheduling.Settings.semesterName;
+                this.currentTermName.BackColor = Color.FromName("Control");
+                this.currentTermName.ForeColor = Color.Black;
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About about = new About();
+            about.MdiParent = this;
+            about.Show();
+        }
+
+        private void manageProfessorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProfessorList lst = new ProfessorList();
+            lst.MdiParent = this;
+            lst.Show();
+        }
     }
 }

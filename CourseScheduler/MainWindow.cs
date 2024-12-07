@@ -85,7 +85,7 @@ namespace CourseScheduler
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,6 +100,26 @@ namespace CourseScheduler
             ProfessorList lst = new ProfessorList();
             lst.MdiParent = this;
             lst.Show();
+        }
+
+        private void viewScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Schedule sched = new Schedule();
+            sched.MdiParent = this;
+            if(!sched.IsDisposed)
+                sched.Show();
+            else
+            {
+                ErrorForm error = new ErrorForm("Please select a semester before continuing!");
+                error.ShowDialog();
+            }
+        }
+
+        private void roomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Rooms rooms = new Rooms();
+            rooms.MdiParent = this;
+            rooms.Show();
         }
     }
 }

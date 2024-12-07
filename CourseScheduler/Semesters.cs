@@ -43,6 +43,7 @@ namespace CourseScheduler
 
         private void btn_SelectSem_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count == 0) return;
             MySqlConnection conn = new MySqlConnection(Scheduling.Settings.connString);
             conn.Open();
             MySqlCommand cmd = new MySqlCommand();
@@ -87,6 +88,19 @@ namespace CourseScheduler
             }
             reader.Close();
             conn.Close();
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            CreateTerm term = new CreateTerm();
+            term.MdiParent = this.MdiParent;
+            term.FormClosing += new FormClosingEventHandler(termOnClose);
+            term.Show();
+        }
+
+        private void termOnClose(object sender, FormClosingEventArgs e)
+        {
+            this.updateMenu(null, null);
         }
     }
 }
